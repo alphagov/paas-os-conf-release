@@ -1,0 +1,10 @@
+---
+name: script_runner
+
+templates:
+  pre-start.sh.erb: bin/pre-start
+
+properties:
+  script_runner.script:
+    description: A script which will be run by bosh-agent prior to starting the job (which does not exist in this case) 
+    default:
