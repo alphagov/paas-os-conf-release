@@ -1,0 +1,37 @@
+---
+name: log_shipping 
+
+templates:
+  pre-start.sh.erb: bin/pre-start
+  post-start.sh.erb: bin/post-start
+  log_shipping.conf.erb: config/log_shipping.conf  
+
+properties:
+  log_shipping.start_delay:
+    description: How many seconds to sleep before discovering log directories.
+    default: 60
+
+  log_shipping.ship_vcap_logs:
+    description: Whether to discover and configure log shipping for files in /var/vcap/sys/log
+    default: false
+
+  log_shipping.ship_system_logs:
+    description: Whether to discover and configure log shipping for files in /var/log
+    default: false
+
+  log_shipping.disable_vcap_syslog:
+    description: If to supress delivery of vcap emitted logs into default syslog destinations.
+    default: false
+
+  log_shipping.cleanup_metron_syslog_forwarding:
+    description: Whether to remove 00-syslog_forwarder.conf file on startup. Metron leaves that file behind even if you remove it or disable syslog forwarding.
+    default: false
+
+  syslog_daemon_config.address:
+    description: "IP address for syslog aggregator"
+
+  syslog_daemon_config.port:
+    description: "TCP port of syslog aggregator"
+
+  syslog_daemon_config.transport:
+    description: "Transport to be used when forwarding logs (tcp|udp|relp)."

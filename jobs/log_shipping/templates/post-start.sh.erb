@@ -1,0 +1,28 @@
+#!/bin/bash -eu
+
+#TODO: do we _really_ need to sleep? can we say for sure that bosh would create log directory for every job/template
+sleep <%= p('log_shipping.start_delay') %>
+
+<% if p('log_shipping.ship_vcap_logs') %>
+config_file="/etc/rsyslog.d/01-ship-vcap-logs.conf"
+
+add_log(){
+  name=$1
+  tag=$name
+  [[ -z "$name" ]] && tag="default"
+  echo "input(type=\"imfile\" File=\"/var/vcap/sys/log/$name/*\" Tag=\"$tag\" Ruleset=\"ToMonitor\")"
+  chmod 755 /var/vcap/sys/log/$name
+  find /var/vcap/sys/log/$name -type f -exec chmod 644 {} +
+}
+add_log '' >$config_file
+
+for log in `ls /var/vcap/sys/log` ; do
+  add_log $log >>$config_file
+done
+<% end %>
+
+<% if p('log_shipping.ship_system_logs') %>
+echo "We handle this later"
+<% end %>
+
+service rsyslog restart

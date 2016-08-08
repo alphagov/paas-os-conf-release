@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+
+<% if p('log_shipping.cleanup_metron_syslog_forwarding') %>
+cfg="/etc/rsyslog.d/00-syslog_forwarder.conf"
+[[ -f $cfg ]] && rm $cfg
+<% end %>
+
+cp /var/vcap/jobs/log_shipping/config/log_shipping.conf /etc/rsyslog.d/00-log_shipping.conf
+
+service rsyslog restart
