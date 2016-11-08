@@ -1,7 +1,0 @@
-check process cleanup_syslog_forwarding
-  with pidfile /var/vcap/sys/run/cleanup_syslog_forwarding/pid
-  start program "/var/vcap/jobs/cleanup_syslog_forwarding/bin/cleanup_syslog_forwarding_ctl start"
-  stop program "/var/vcap/jobs/cleanup_syslog_forwarding/bin/cleanup_syslog_forwarding_ctl stop"
-  <% if !p('cleanup_syslog_forwarding.depends_on').empty? %>
-  depends on <%= p('cleanup_syslog_forwarding.depends_on').join(', ') %>
-  <% end %>
